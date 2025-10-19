@@ -1,16 +1,89 @@
-# React + Vite
+# WatchMate Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern, responsive React frontend for WatchMate - A movie tracking and review platform.
 
-Currently, two official plugins are available:
+##  Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **JWT Authentication** - Secure login/register with token refresh
+- **Movie Discovery** - Browse trending, popular, and recent movies
+- **Search** - Find movies by title or storyline
+- **Movie Details** - View full information, cast, reviews
+- **Personal Watchlist** - Track movies you want to watch
+- **Reviews & Ratings** - Rate and review movies
+- **User Profiles** - View statistics and manage profile
+- **Responsive Design** - Works on all devices
+- **Dark Theme** - Beautiful dark UI with TailwindCSS
 
-## React Compiler
+##  Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18** - UI library
+- **Vite** - Build tool
+- **React Router** - Navigation
+- **Axios** - HTTP client
+- **Zustand** - State management
+- **TailwindCSS** - Styling
+- **Lucide React** - Icons
 
-## Expanding the ESLint configuration
+## 📦 Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+- Node.js 18+
+- Backend API running on `http://127.0.0.1:8000`
+
+- ### Setup
+
+1. Clone the repository
+```bash
+git clone https://github.com/Resarex/watchmate-frontend.git
+cd watchmate-frontend
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start development server
+```bash
+npm run dev
+```
+
+4. Open browser at `http://localhost:5173`
+
+## 🔗 Backend
+
+This frontend connects to the WatchMate Django REST API:
+- **Backend Repo:** [watchmate-api-drf](https://github.com/Resarex/watchmate-api-drf)
+- **API URL:** `http://127.0.0.1:8000/api`
+
+Make sure the backend is running before starting the frontend.
+
+##  Features Breakdown
+
+### Authentication
+- JWT token-based authentication
+- Automatic token refresh
+- Protected routes
+- Persistent login
+
+### Movie Features
+- Browse trending/popular movies
+- Search by title or description
+- Filter by genre, year, rating
+- View detailed information
+- Watch trailers
+
+### User Features
+- Personal watchlist (want to watch, watching, watched)
+- Write and manage reviews
+- Rate movies (1-5 stars)
+- Profile statistics
+- Favorite genres tracking
+
+- ## 👤 Author
+
+**Sidhant** - [GitHub](https://github.com/Resarex)
+
+## 🔗 Links
+
+- **Backend API:** [watchmate-api-drf](https://github.com/Resarex/watchmate-api-drf)
