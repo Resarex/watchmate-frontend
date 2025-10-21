@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Film, Mail, Lock, User } from 'lucide-react';
+import { Film, Mail, Lock, User as UserIcon, AlertCircle } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 
 const Register = () => {
@@ -44,7 +44,6 @@ const Register = () => {
     if (result.success) {
       navigate('/');
     } else {
-      // Handle error object or string
       if (typeof result.error === 'object') {
         const errorMessages = Object.values(result.error).flat().join(' ');
         setError(errorMessages);
@@ -56,33 +55,36 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
-      <div className="card max-w-md w-full">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-8 page-transition">
+      <div className="card max-w-md w-full card-hover animate-slide-up">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Film className="text-primary-500" size={48} />
+            <div className="p-4 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg shadow-primary-500/50">
+              <Film className="text-white" size={48} />
+            </div>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Create Account</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gradient">Create Account</h1>
           <p className="text-slate-400">Join WatchMate today</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
-            {error}
+          <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg mb-6 flex items-start space-x-3 animate-slide-down">
+            <AlertCircle size={20} className="flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-2">Username</label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+            <label className="block text-sm font-medium mb-2 text-slate-300">Username</label>
+            <div className="relative group">
+              <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors" size={20} />
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="input-field pl-10"
+                className="input-field pl-12"
                 placeholder="Choose a username"
                 required
               />
@@ -90,15 +92,15 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+            <label className="block text-sm font-medium mb-2 text-slate-300">Email</label>
+            <div className="relative group">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors" size={20} />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="input-field pl-10"
+                className="input-field pl-12"
                 placeholder="Enter your email"
                 required
               />
@@ -106,15 +108,15 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+            <label className="block text-sm font-medium mb-2 text-slate-300">Password</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors" size={20} />
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="input-field pl-10"
+                className="input-field pl-12"
                 placeholder="Create a password"
                 required
               />
@@ -122,15 +124,15 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Confirm Password</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+            <label className="block text-sm font-medium mb-2 text-slate-300">Confirm Password</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors" size={20} />
               <input
                 type="password"
                 name="password2"
                 value={formData.password2}
                 onChange={handleChange}
-                className="input-field pl-10"
+                className="input-field pl-12"
                 placeholder="Confirm your password"
                 required
               />
@@ -142,16 +144,25 @@ const Register = () => {
             disabled={loading}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Creating account...' : 'Sign Up'}
+            {loading ? (
+              <span className="flex items-center justify-center space-x-2">
+                <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin"></div>
+                <span>Creating account...</span>
+              </span>
+            ) : (
+              'Sign Up'
+            )}
           </button>
         </form>
 
-        <p className="text-center text-slate-400 mt-6">
-          Already have an account?{' '}
-          <Link to="/login" className="text-primary-500 hover:text-primary-400">
-            Login
-          </Link>
-        </p>
+        <div className="mt-6 text-center">
+          <p className="text-slate-400">
+            Already have an account?{' '}
+            <Link to="/login" className="text-primary-500 hover:text-primary-400 font-medium transition-colors">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

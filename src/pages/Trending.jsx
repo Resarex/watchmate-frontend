@@ -25,26 +25,34 @@ const Trending = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="loading-spinner rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-500 animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="flex items-center space-x-3 mb-8">
-        <TrendingUp className="text-primary-500" size={32} />
-        <h1 className="text-3xl font-bold">Trending This Week</h1>
+    <div className="px-4 page-transition">
+      <div className="flex items-center space-x-4 mb-8 md:mb-10">
+        <div className="p-3 bg-primary-500/20 rounded-xl">
+          <TrendingUp className="text-primary-500" size={36} />
+        </div>
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold text-gradient">Trending This Week</h1>
+          <p className="text-slate-400 mt-1">Most watched movies in the last 7 days</p>
+        </div>
       </div>
 
       {movies.length === 0 ? (
-        <div className="text-center text-slate-400 py-12">
-          <p>No trending movies found</p>
+        <div className="card text-center py-16">
+          <TrendingUp size={64} className="mx-auto text-slate-600 mb-4" />
+          <p className="text-slate-400 text-lg">No trending movies found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="movie-grid">
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <div key={movie.id} className="animate-slide-up">
+              <MovieCard movie={movie} />
+            </div>
           ))}
         </div>
       )}

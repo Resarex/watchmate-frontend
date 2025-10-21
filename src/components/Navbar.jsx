@@ -12,20 +12,25 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+    <nav className="bg-secondary-500/20 backdrop-blur-md border-b border-secondary-500/30 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-primary-500 hover:text-primary-400 transition-colors">
-            <Film size={28} />
-            <span className="text-xl font-bold">WatchMate</span>
+          <Link 
+            to="/" 
+            className="flex items-center space-x-2 text-primary-500 hover:text-primary-400 transition-all duration-200 group"
+          >
+            <Film size={32} className="group-hover:rotate-12 transition-transform duration-300" />
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
+              WatchMate
+            </span>
           </Link>
 
           {/* Nav Links */}
-          <div className="flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="flex items-center space-x-1 text-slate-300 hover:text-white transition-colors"
+              className="nav-link flex items-center space-x-2"
             >
               <Home size={18} />
               <span>Home</span>
@@ -33,7 +38,7 @@ const Navbar = () => {
 
             <Link
               to="/trending"
-              className="flex items-center space-x-1 text-slate-300 hover:text-white transition-colors"
+              className="nav-link flex items-center space-x-2"
             >
               <TrendingUp size={18} />
               <span>Trending</span>
@@ -41,7 +46,7 @@ const Navbar = () => {
 
             <Link
               to="/popular"
-              className="flex items-center space-x-1 text-slate-300 hover:text-white transition-colors"
+              className="nav-link flex items-center space-x-2"
             >
               <Star size={18} />
               <span>Popular</span>
@@ -50,7 +55,7 @@ const Navbar = () => {
             {isAuthenticated && (
               <Link
                 to="/my-watchlist"
-                className="flex items-center space-x-1 text-slate-300 hover:text-white transition-colors"
+                className="nav-link flex items-center space-x-2"
               >
                 <List size={18} />
                 <span>My List</span>
@@ -64,24 +69,26 @@ const Navbar = () => {
               <>
                 <Link
                   to="/profile"
-                  className="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors"
+                  className="hidden md:flex items-center space-x-2 text-slate-300 hover:text-primary-500 transition-colors"
                 >
-                  <User size={20} />
-                  <span>{user?.username || 'Profile'}</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+                    <User size={18} className="text-white" />
+                  </div>
+                  <span className="font-medium">{user?.username || 'Profile'}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-2 text-slate-300 hover:text-red-400 transition-colors"
                 >
                   <LogOut size={20} />
-                  <span>Logout</span>
+                  <span className="hidden md:inline">Logout</span>
                 </button>
               </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="text-slate-300 hover:text-white transition-colors"
+                  className="text-slate-300 hover:text-primary-500 font-medium transition-colors"
                 >
                   Login
                 </Link>
@@ -94,6 +101,34 @@ const Navbar = () => {
               </>
             )}
           </div>
+        </div>
+
+        {/* Mobile Nav Links */}
+        <div className="md:hidden flex items-center justify-around py-3 border-t border-secondary-500/30">
+          <Link to="/" className="nav-link flex flex-col items-center space-y-1">
+            <Home size={20} />
+            <span className="text-xs">Home</span>
+          </Link>
+          <Link to="/trending" className="nav-link flex flex-col items-center space-y-1">
+            <TrendingUp size={20} />
+            <span className="text-xs">Trending</span>
+          </Link>
+          <Link to="/popular" className="nav-link flex flex-col items-center space-y-1">
+            <Star size={20} />
+            <span className="text-xs">Popular</span>
+          </Link>
+          {isAuthenticated && (
+            <Link to="/my-watchlist" className="nav-link flex flex-col items-center space-y-1">
+              <List size={20} />
+              <span className="text-xs">My List</span>
+            </Link>
+          )}
+          {isAuthenticated && (
+            <Link to="/profile" className="nav-link flex flex-col items-center space-y-1">
+              <User size={20} />
+              <span className="text-xs">Profile</span>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
