@@ -133,7 +133,7 @@ const MyWatchlist = () => {
                 {/* Poster */}
                 <Link
                   to={`/movie/${item.watchlist_detail.id}`}
-                  className="flex-shrink-0 w-full sm:w-32 aspect-[2/3] bg-dark-400 rounded-xl overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all shadow-lg group"
+                  className="relative flex-shrink-0 w-full sm:w-32 aspect-[2/3] bg-dark-400 rounded-xl overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all shadow-lg group"
                 >
                   {item.watchlist_detail.poster ? (
                     <>
