@@ -7,6 +7,7 @@ const MyWatchlist = () => {
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [confirmRemoveId, setConfirmRemoveId] = useState(null);
 
   useEffect(() => {
     fetchWatchlist();
@@ -33,13 +34,12 @@ const MyWatchlist = () => {
   };
 
   const handleRemove = async (id) => {
-    if (window.confirm('Remove this movie from your watchlist?')) {
-      try {
-        await movieService.removeFromWatchlist(id);
-        fetchWatchlist();
-      } catch (error) {
-        alert('Failed to remove from watchlist');
-      }
+    try {
+      await movieService.removeFromWatchlist(id);
+      setConfirmRemoveId(null);
+      fetchWatchlist();
+    } catch (error) {
+      alert('Failed to remove from watchlist');
     }
   };
 
@@ -205,6 +205,7 @@ const MyWatchlist = () => {
                   <select
                     value={item.status}
                     onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
                     className="input-field py-2.5 text-sm flex-1 sm:flex-none"
                   >
                     <option value="want_to_watch">Want to Watch</option>
@@ -212,13 +213,30 @@ const MyWatchlist = () => {
                     <option value="watched">Watched</option>
                   </select>
 
-                  <button
-                    onClick={() => handleRemove(item.id)}
-                    className="btn-secondary py-2.5 px-4 flex items-center justify-center space-x-2 hover:bg-red-500 hover:border-red-500 hover:text-white transition-all"
-                  >
-                    <Trash2 size={16} />
-                    <span className="hidden sm:inline">Remove</span>
-                  </button>
+                  {confirmRemoveId === item.id ? (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleRemove(item.id); }}
+                        className="flex-1 py-2.5 px-3 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-all"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setConfirmRemoveId(null); }}
+                        className="flex-1 py-2.5 px-3 bg-secondary-500/30 hover:bg-secondary-500/50 text-slate-300 rounded-lg text-sm font-medium transition-all"
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setConfirmRemoveId(item.id); }}
+                      className="btn-secondary py-2.5 px-4 flex items-center justify-center space-x-2 hover:bg-red-500 hover:border-red-500 hover:text-white transition-all"
+                    >
+                      <Trash2 size={16} />
+                      <span className="hidden sm:inline">Remove</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

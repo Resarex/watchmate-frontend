@@ -38,7 +38,7 @@ export const movieService = {
   // User watchlist
   getMyWatchlist: () => api.get('/watch/my-watchlist/'),
   addToWatchlist: (data) => api.post('/watch/my-watchlist/', data),
-  updateWatchlistStatus: (id, data) => api.put(`/watch/my-watchlist/${id}/`, data),
+  updateWatchlistStatus: (id, data) => api.patch(`/watch/my-watchlist/${id}/`, data),
   removeFromWatchlist: (id) => api.delete(`/watch/my-watchlist/${id}/`),
 
   // Statistics

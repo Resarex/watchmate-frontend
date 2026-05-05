@@ -14,13 +14,16 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [inWatchlist, setInWatchlist] = useState(false);
-  
+  const [watchlistItemId, setWatchlistItemId] = useState(null);
+  const [watchlistStatus, setWatchlistStatus] = useState('want_to_watch');
+
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     fetchMovieDetails();
     fetchReviews();
-  }, [id]);
+    if (isAuthenticated) fetchWatchlistStatus();
+  }, [id, isAuthenticated]);
 
   const fetchMovieDetails = async () => {
     try {
@@ -30,6 +33,20 @@ const MovieDetail = () => {
       console.error('Failed to fetch movie:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchWatchlistStatus = async () => {
+    try {
+      const response = await movieService.getMyWatchlist();
+      const match = response.data.find((item) => String(item.watchlist_detail.id) === String(id));
+      if (match) {
+        setInWatchlist(true);
+        setWatchlistItemId(match.id);
+        setWatchlistStatus(match.status);
+      }
+    } catch (error) {
+      // not logged in or network error — silently ignore
     }
   };
 
@@ -77,14 +94,24 @@ const MovieDetail = () => {
     }
 
     try {
-      await movieService.addToWatchlist({
+      const response = await movieService.addToWatchlist({
         watchlist_id: id,
         status: 'want_to_watch',
       });
       setInWatchlist(true);
-      alert('Added to watchlist!');
+      setWatchlistItemId(response.data.id);
+      setWatchlistStatus('want_to_watch');
     } catch (error) {
       alert('Failed to add to watchlist');
+    }
+  };
+
+  const handleStatusChange = async (newStatus) => {
+    try {
+      await movieService.updateWatchlistStatus(watchlistItemId, { status: newStatus });
+      setWatchlistStatus(newStatus);
+    } catch (error) {
+      alert('Failed to update status');
     }
   };
 
@@ -192,14 +219,28 @@ const MovieDetail = () => {
               )}
 
               {isAuthenticated && (
-                <button
-                  onClick={handleAddToWatchlist}
-                  disabled={inWatchlist}
-                  className={inWatchlist ? 'btn-secondary flex items-center space-x-2 opacity-75' : 'btn-outline flex items-center space-x-2'}
-                >
-                  {inWatchlist ? <Check size={20} /> : <Plus size={20} />}
-                  <span>{inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}</span>
-                </button>
+                inWatchlist ? (
+                  <div className="flex items-center space-x-2">
+                    <Check size={20} className="text-primary-500" />
+                    <select
+                      value={watchlistStatus}
+                      onChange={(e) => handleStatusChange(e.target.value)}
+                      className="input-field py-2 text-sm w-auto"
+                    >
+                      <option value="want_to_watch">Want to Watch</option>
+                      <option value="watching">Watching</option>
+                      <option value="watched">Watched</option>
+                    </select>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleAddToWatchlist}
+                    className="btn-outline flex items-center space-x-2"
+                  >
+                    <Plus size={20} />
+                    <span>Add to Watchlist</span>
+                  </button>
+                )
               )}
             </div>
 
